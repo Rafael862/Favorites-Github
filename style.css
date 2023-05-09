@@ -1,0 +1,112 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    color: #e1e1e6;
+}
+
+:root {
+    font-size: 62.5%;
+}
+
+body{
+    background-color: #000;
+    font-family: 'Roboto', sans-serif;
+    /* font-family: 'Roboto Mono', monospace; */
+    font-size: 1.6rem;
+}
+
+
+.divletter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin: 11.5rem auto 8.7rem;
+
+    max-width: 110.2rem;
+    height: 4.8rem;
+}
+
+.divletter div {
+    display: flex;
+    align-items: center;
+}
+
+input{
+    background-color: #06181C;
+    color: #7c7c8a;
+
+    width: 46.2rem;
+    margin-right: .8rem;
+    border-radius: 5px;
+    padding: 1.7rem;
+    border: none;
+}
+
+.btn-favorites {
+    text-align: center;
+    
+    background-color: #065E7C;
+    color: #fff;
+    border: none;
+    padding: 1.2rem 3.2rem;
+    border-radius: 5px;
+}
+.btn-favorites span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+table {
+    color: #e1e1e6;
+    background-color: #06161b;
+    border-radius: 15px 15px 12px 12px;
+    max-width: 110.2rem;
+    margin: 8.7rem auto 8.7rem;
+}
+
+thead {
+    text-align: left;
+    background-color: #092d38;
+}
+
+
+thead tr th{
+    border-radius: 12px;
+    padding: 1.6rem 4rem;
+}
+
+table .name, .followers, .repositories, .acao{
+    height: 10.4rem;
+    color: #e1e1e6;
+    padding: 2.4rem 4rem;
+}
+
+table .repositories, .followers {
+    width: 21.9rem;
+}
+
+table .name img {
+    border-radius: 999%;
+    width: 5.6rem;
+    margin-right: 1.6rem;
+}
+
+table .name {
+    width: 50.4rem;
+    
+
+    display: flex;
+    align-items: center;
+}
+
+
+table .acao{
+    width: 17.8rem;
+}
