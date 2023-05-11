@@ -56,6 +56,7 @@ input{
     border: none;
     padding: 1.2rem 3.2rem;
     border-radius: 5px;
+    cursor: pointer;
 }
 .btn-favorites span {
     display: flex;
@@ -65,22 +66,35 @@ input{
 
 table {
     color: #e1e1e6;
-    background-color: #06161b;
-    border-radius: 15px 15px 12px 12px;
+    border-radius: 10px;
     max-width: 110.2rem;
     margin: 8.7rem auto 8.7rem;
+    border-spacing: 0;
+    border: 1px solid #4A808C;
+    
+}
+
+tbody tr{
+    background-color: #06161b;
 }
 
 thead {
     text-align: left;
     background-color: #092d38;
 }
-
+table th:first-child {
+    border-top-left-radius: .9rem;
+}
+table th:nth-child(4) {
+    border-top-right-radius: .9rem;
+}
 
 thead tr th{
-    border-radius: 12px;
     padding: 1.6rem 4rem;
 }
+table tr:nth-child(even) {
+    background: #092d38;
+  }
 
 table .name, .followers, .repositories, .acao{
     height: 10.4rem;
@@ -110,3 +124,24 @@ table .name {
 table .acao{
     width: 17.8rem;
 }
+
+.btn-remove{
+    background-color: transparent;
+    color: #F75A68;
+    border: none;
+    font-size: 2rem;
+    line-height: 3.2rem;
+    cursor: pointer;
+}
+
+table tr:last-child td:last-of-type {
+    border-bottom-right-radius: 10px;
+}
+
+table tr:last-child td:nth-child(1) {
+    border-bottom-left-radius: .9rem;
+}
+
+  
+
+  
