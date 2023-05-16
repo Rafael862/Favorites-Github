@@ -1,22 +1,11 @@
-export class GithubUser {
-    static search(username){
-        const endpoint = `https://api.github.com/users/${username}`
-        return fetch(endpoint).then(data => data.json())
-        .then(({ login, name, public_repos, followers}) => ({
-            login,
-            name,
-            public_repos,
-            followers
-        }))
-    }
-}
+import { GithubUser } from "./GithubUser.js"
 
 export class Favorites {
     constructor(root){
         this.root = document.querySelector(root)
         this.load()
 
-        GithubUser.search('diego3g').then(user => console.log(user))
+        //GithubUser.search('diego3g').then(user => console.log(user))
     }
 
 
@@ -24,18 +13,46 @@ export class Favorites {
     load() {
         this.entries = JSON.parse(localStorage.getItem('@github-favorites:')) || []
     }
+
+    save() {
+        localStorage.setItem('@github-favorites:',JSON.stringify(this.entries))
+    }
+
+    convertToLowerCase(){
+        let input = document.getElementById('input-search')
+        input.value = input.value.toLocaleLowerCase()
+      }
      
     async add(username){
-        const user = await GithubUser.search(username)
-        console.log(user)
+        try{
+
+            const userExists = this.entries.find(entry => entry.login === username)
+            console.log(userExists)
+
+            if(userExists){
+                throw new Error('Usuário já cadastrado')
+            }
+
+            const user = await GithubUser.search(username)
+            
+            if(user.login === undefined){
+            throw new Error('Usuário não encontrado!')
+        }
+        this.entries = [user, ...this.entries]
+        this.update()
+        this.save()
+    }catch(error){
+        alert(error.message)
+    }
     }
 
     delete(user){
-         
-        const filteredEntries = this.entries.filter(entry => entry.login !== user.login)
         
-        this.entries = filteredEntries
-        this.update()
+            const filteredEntries = this.entries.filter(entry => entry.login !== user.login)
+            
+            this.entries = filteredEntries
+            this.update()
+            this.save()
     }
 }
 
@@ -54,7 +71,7 @@ export class FavoritesView extends Favorites{
     const addButton = this.root.querySelector('.divletter2 button')
     addButton.onclick = () => {
         const { value } = this.root.querySelector('.divletter2 input')
-        this.add(value)
+        this.add(value.toLocaleLowerCase())
     }
     }
 
@@ -67,7 +84,8 @@ export class FavoritesView extends Favorites{
             const row = this.createRow()
             row.querySelector('.name img').src = `https://github.com/${user.login}.png`
             row.querySelector('.name p').textContent = user.name
-            row.querySelector('.name span').textContent = user.login
+            row.querySelector('.name a').href = `https://github.com/${user.login}`
+            row.querySelector('.name span').textContent = user.login.toLocaleLowerCase()
             row.querySelector('.repositories').textContent = user.public_repos
             row.querySelector('.followers').textContent = user.followers
 
