@@ -1,30 +1,41 @@
+export class GithubUser {
+    static search(username){
+        const endpoint = `https://api.github.com/users/${username}`
+        return fetch(endpoint).then(data => data.json())
+        .then(({ login, name, public_repos, followers}) => ({
+            login,
+            name,
+            public_repos,
+            followers
+        }))
+    }
+}
+
 export class Favorites {
     constructor(root){
         this.root = document.querySelector(root)
         this.load()
+
+        GithubUser.search('diego3g').then(user => console.log(user))
     }
 
-    load(){
-        this.entries = 
-        [
-            {
-                login: 'maykbrito',
-                name: 'Mayk Brito',
-                publick_repos: '76',
-                followers: '1200'
-            },
-            {
-                login: 'diego3g',
-                name: 'Diego Fernandes',
-                publick_repos: '86',
-                followers: '2200'
-            }
-        ]
+
+
+    load() {
+        this.entries = JSON.parse(localStorage.getItem('@github-favorites:')) || []
     }
+     
+    async add(username){
+        const user = await GithubUser.search(username)
+        console.log(user)
+    }
+
     delete(user){
          
         const filteredEntries = this.entries.filter(entry => entry.login !== user.login)
-        console.log(filteredEntries)
+        
+        this.entries = filteredEntries
+        this.update()
     }
 }
 
@@ -32,9 +43,19 @@ export class Favorites {
 export class FavoritesView extends Favorites{
     constructor(root){
         super(root)
+
         this.tbody = document.querySelector('table tbody')
 
         this.update()
+        this.onadd()
+    }
+
+    onadd(){
+    const addButton = this.root.querySelector('.divletter2 button')
+    addButton.onclick = () => {
+        const { value } = this.root.querySelector('.divletter2 input')
+        this.add(value)
+    }
     }
 
     update()
@@ -47,7 +68,7 @@ export class FavoritesView extends Favorites{
             row.querySelector('.name img').src = `https://github.com/${user.login}.png`
             row.querySelector('.name p').textContent = user.name
             row.querySelector('.name span').textContent = user.login
-            row.querySelector('.repositories').textContent = user.publick_repos
+            row.querySelector('.repositories').textContent = user.public_repos
             row.querySelector('.followers').textContent = user.followers
 
             row.querySelector('.btn-remove').onclick = () => {
@@ -85,8 +106,9 @@ export class FavoritesView extends Favorites{
 
     removeAllTr(){
 
-        this.tbody.querySelectorAll('tr').forEach((tr) => {
-            console.log(tr)
+        this.tbody.querySelectorAll('tr')
+        .forEach((tr) => {
+            tr.remove()
         })
 
     }
