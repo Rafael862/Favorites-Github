@@ -8,27 +8,20 @@ export class Favorites {
         //GithubUser.search('diego3g').then(user => console.log(user))
     }
 
-
-
     load() {
-        this.entries = JSON.parse(localStorage.getItem('@github-favorites:')) || []
+        this.entries = JSON.parse(localStorage.getItem('@github-favorites:').toLowerCase()) || []
     }
 
     save() {
-        localStorage.setItem('@github-favorites:',JSON.stringify(this.entries))
+        localStorage.setItem('@github-favorites:',JSON.stringify(this.entries).toLowerCase())
     }
 
-    convertToLowerCase(){
-        let input = document.getElementById('input-search')
-        input.value = input.value.toLocaleLowerCase()
-      }
-     
     async add(username){
+        username = username.toLowerCase()
+        alert(`alerta de validação do usuário${username}`)
         try{
-
             const userExists = this.entries.find(entry => entry.login === username)
-            console.log(userExists)
-
+            
             if(userExists){
                 throw new Error('Usuário já cadastrado')
             }
@@ -68,11 +61,14 @@ export class FavoritesView extends Favorites{
     }
 
     onadd(){
-    const addButton = this.root.querySelector('.divletter2 button')
-    addButton.onclick = () => {
-        const { value } = this.root.querySelector('.divletter2 input')
-        this.add(value.toLocaleLowerCase())
-    }
+        const addButton = this.root.querySelector('.divletter2 button')
+        addButton.onclick = () => {
+            const { value } = this.root.querySelector('.divletter2 input')//.toLowerCase
+            //let value = this.root.querySelector('.divletter2 input').value.toLowerCase()
+            alert(`alerta no onadd que pega o click do botão ${value}`)
+            this.add(value)
+        }
+
     }
 
     update()
@@ -85,7 +81,7 @@ export class FavoritesView extends Favorites{
             row.querySelector('.name img').src = `https://github.com/${user.login}.png`
             row.querySelector('.name p').textContent = user.name
             row.querySelector('.name a').href = `https://github.com/${user.login}`
-            row.querySelector('.name span').textContent = user.login.toLocaleLowerCase()
+            row.querySelector('.name span').textContent = user.login
             row.querySelector('.repositories').textContent = user.public_repos
             row.querySelector('.followers').textContent = user.followers
 
@@ -95,7 +91,7 @@ export class FavoritesView extends Favorites{
                     this.delete(user)
                 }
             }
-
+            console.log(this.entries)
             this.tbody.append(row)
 
         })
@@ -108,10 +104,10 @@ export class FavoritesView extends Favorites{
         `
 
             <td class="name">
-                <img src="https://github.com/Rafael862.png" alt="Imagem de null">
-                <a href="https://github.com/Rafael862" target="_blank">
-                    <p>Rafael Ferreira</p>
-                    <span>Rafael862</span>
+                <img src="https://github.com/rafael862.png" alt="Imagem de null">
+                <a href="https://github.com/rafael862" target="_blank">
+                    <p>rafael ferreira</p>
+                    <span>rafael862</span>
                 </a>
             </td>
             <td class="repositories">55</td>
